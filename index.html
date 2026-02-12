@@ -2,23 +2,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Verify API</title>
+    <title>网络验证管理</title>
 </head>
 <body>
-<script>
-let cards=[{card:"DAY-A1B2C",type:"day",device:"",status:"unbound"},{card:"WEEK-1234",type:"week",device:"PC-001",status:"bound"},{card:"MONTH-2024",type:"month",device:"",status:"unbound"},{card:"PERM-8888",type:"permanent",device:"SERVER-01",status:"bound"}];
-try{let s=localStorage.getItem('vdb');if(s)cards=JSON.parse(s);else localStorage.setItem('vdb',JSON.stringify(cards));}catch(e){}
-function sv(){localStorage.setItem('vdb',JSON.stringify(cards));}
-let u=new URL(location.href),p=u.searchParams;
-if(p.has('api')){
-    let a=p.get('action')||'verify',c=p.get('card')||'',d=p.get('device')||'',t=p.get('type')||'day',r={success:false,message:'unknown'};
-    if(a=='verify'&&c){let x=cards.find(x=>x.card==c);r=x?{success:true,card:x.card,type:x.type,status:x.status,device:x.device||null,message:'ok'}:{success:false,message:'no'};}
-    else if(a=='unbind'&&c){let x=cards.find(x=>x.card==c);if(x&&x.device){r={success:true,card:x.card,unbind_device:x.device,message:'unbind ok'};x.device='';x.status='unbound';sv();}else r={success:false,message:'not bound'};}
-    else if(a=='rebind'&&c&&d){let x=cards.find(x=>x.card==c);if(x){r={success:true,card:x.card,old_device:x.device||'none',new_device:d,message:'rebind ok'};x.device=d;x.status='bound';sv();}else r={success:false,message:'no'};}
-    else if(a=='generate'){let pre={day:'DAY',week:'WEEK',month:'MONTH',permanent:'PERM'}[t]||'CARD';let rd=Math.random().toString(36).substring(2,8).toUpperCase();let nc=pre+'-'+rd;cards.push({card:nc,type:t,device:'',status:'unbound'});sv();r={success:true,card:nc,type:t,message:'gen ok'};}
-    else if(a=='edit'&&c&&t){let x=cards.find(x=>x.card==c);if(x){x.type=t;sv();r={success:true,card:c,new_type:t,message:'edit ok'};}else r={success:false,message:'no'};}
-    document.write(JSON.stringify(r));document.close();
-}else{document.write('API Ready - Add ?api=1')}
-</script>
+    <h1>✅ 网络验证API已运行</h1>
+    <p>API地址: <code>/api/verify</code></p>
+    <p>C++请POST到: <code>https://你的域名.vercel.app/api/verify</code></p>
 </body>
 </html>
